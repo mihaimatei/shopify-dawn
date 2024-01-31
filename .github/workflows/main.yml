@@ -1,0 +1,9 @@
+run-name: Deploy to ${{ inputs.deploy_target }} by @${{ github.actor }}
+on: deployment
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: mihaimatei/change-files-action-test@v0.1
+        with:
+          url: 'my-workflow-optimized-url.com'
