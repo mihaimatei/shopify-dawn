@@ -4,6 +4,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: mihaimatei/change-files-action-test@v0.1
+      - uses: mihaimatei/change-files-action-test@main
         with:
           url: 'my-workflow-optimized-url.com'
