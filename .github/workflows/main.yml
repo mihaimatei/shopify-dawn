@@ -4,7 +4,22 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: mihaimatei/change-files-action-test@main
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Check for Skip Tag in Commit Message
+        id: check-skip
+        run: |
+          echo "::set-output name=skip::$(git log -1 --pretty=%B | grep '\\[skip ci\\]' && echo 'true' || echo 'false')"
+      - name: Make changes to theme files
+        if: steps.check-skip.outputs.skip != 'true'
+        uses: mihaimatei/change-files-action-test@main
         with:
           url: 'my-workflow-optimized-url.com'
+      - name: Commit and Push Changes
+        if: steps.check-skip.outputs.skip != 'true'
+        run: |
+          git config --global user.name 'Github Workflow'
+          git config --global user.email 'myemail@github.com'
+          git add .
+          git commit -m "Workflow update theme files [skip ci]"
+          git push
